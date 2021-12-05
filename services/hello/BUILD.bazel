@@ -3,7 +3,7 @@ load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 go_image(
     name = "hello",
     srcs = ["main.go"],
-    goos = "linux",
-    goarch = "amd64",
-    static = "on",
+    # goos = "linux",
+    # goarch = "amd64",
+    # static = "on",
 )
