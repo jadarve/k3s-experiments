@@ -1,0 +1,19 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: k3s-experiments
+deploy:
+  kubectl:
+    manifests:
+    - services/hello/k8s/local.yaml
+build:
+  insecureRegistries: 
+    - registry.local:5000
+
+  local:
+    push: true
+
+  artifacts:
+  - image: hello
+    bazel:
+      target: //services/hello:hello.tar
