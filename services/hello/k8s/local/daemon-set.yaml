@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: hello-daemon
+  labels:
+    app: hello-daemon
+spec:
+  selector:
+    matchLabels:
+      app: hello-daemon
+  template:
+    metadata:
+      labels:
+        app: hello-daemon
+    spec:
+      containers:
+      - name: hello-container
+        image: hello
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        resources:
+          limits:
+            memory: 20Mi
+          requests:
+            cpu: 100m
+            memory: 20Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-headless-daemon
+  labels:
+    env: dev
+spec:
+  # clusterIP: None
+  type: NodePort
+  selector:
+    app: hello-daemon
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+      name: http
+

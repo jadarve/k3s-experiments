@@ -5,7 +5,8 @@ metadata:
 deploy:
   kubectl:
     manifests:
-    - services/hello/k8s/local.yaml
+    - services/hello/k8s/local/service.yaml
+    - services/hello/k8s/local/daemon-set.yaml
 build:
   insecureRegistries: 
     - registry.local:5000
