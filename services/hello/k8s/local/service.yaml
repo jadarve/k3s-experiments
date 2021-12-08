@@ -37,10 +37,10 @@ spec:
           resources:
             limits:
               cpu: 100m
-              memory: 10M
+              memory: 10Mi
             requests:
               cpu: 100m
-              memory: 10M
+              memory: 10Mi
           ports:
             - containerPort: 8080
               protocol: TCP
