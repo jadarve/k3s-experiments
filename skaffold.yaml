@@ -7,6 +7,7 @@ deploy:
     manifests:
     - services/hello/k8s/local/service.yaml
     - services/hello/k8s/local/daemon-set.yaml
+    - services/hello/k8s/local/daemon-set.arm.yaml
 build:
   insecureRegistries: 
     - registry.local:5000
@@ -18,3 +19,13 @@ build:
   - image: hello
     bazel:
       target: //services/hello:hello.tar
+      args:
+        - "--platforms=@io_bazel_rules_go//go/toolchain:linux_amd64"
+    # Need to define another build artifact to compile for ARM
+    # There is still no support in Bazel for multiarch docker images
+    # https://github.com/bazelbuild/rules_docker/issues/300
+  - image: hello_arm
+    bazel:
+      target: //services/hello:hello.tar
+      args:
+        - "--platforms=@io_bazel_rules_go//go/toolchain:linux_arm"

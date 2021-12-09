@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: hello-daemon
+  name: hello-daemon-arm
   labels:
-    app: hello-daemon
+    app: hello-daemon-arm
 spec:
   selector:
     matchLabels:
-      app: hello-daemon
+      app: hello-daemon-arm
   template:
     metadata:
       labels:
-        app: hello-daemon
+        app: hello-daemon-arm
     spec:
       containers:
       - name: hello-container
-        image: hello
+        image: hello_arm
         ports:
           - containerPort: 8080
             protocol: TCP
@@ -27,19 +27,19 @@ spec:
             cpu: 100m
             memory: 10Mi
       nodeSelector:
-        kubernetes.io/arch: amd64
+        kubernetes.io/arch: arm
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-headless-daemon
+  name: hello-headless-daemon-arm
   labels:
     env: dev
 spec:
   # clusterIP: None
   type: NodePort
   selector:
-    app: hello-daemon
+    app: hello-daemon-arm
   ports:
     - port: 80
       targetPort: 8080
