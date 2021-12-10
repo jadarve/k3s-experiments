@@ -1,0 +1,14 @@
+# load("@rules_rust//rust:defs.bzl", "rust_binary")
+load("@io_bazel_rules_docker//rust:image.bzl", "rust_image")
+
+package(default_visibility = ["//visibility:public"])
+
+# rust_binary(
+#     name = "echo-rust",
+#     srcs = ["main.rs"]
+# )
+
+rust_image(
+    name = "echo-rust",
+    srcs = ["main.rs"],
+)

@@ -8,6 +8,7 @@ deploy:
     - services/hello/k8s/local/service.yaml
     - services/hello/k8s/local/daemon-set.yaml
     - services/hello/k8s/local/daemon-set.arm.yaml
+    - services/echo-rust/k8s/local/service.yaml
 build:
   insecureRegistries: 
     - registry.local:5000
@@ -29,3 +30,9 @@ build:
       target: //services/hello:hello.tar
       args:
         - "--platforms=@io_bazel_rules_go//go/toolchain:linux_arm"
+
+  - image: echo-rust
+    bazel:
+      target: //services/echo-rust:echo-rust.tar
+      # args:
+      #   - "--platforms=@rules_rust//rust/platform:arm-unknown-linux-gnueabi"
