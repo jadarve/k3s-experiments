@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: roscore-arm
+  labels:
+    app: roscore-arm
+spec:
+  selector:
+    matchLabels:
+      app: roscore-arm
+  template:
+    metadata:
+      labels:
+        app: roscore-arm
+    spec:
+      nodeSelector:
+          kubernetes.io/arch: arm
+      containers:
+      - name: roscore-container
+        image: ros:melodic-ros-core
+        command:
+          - /ros_entrypoint.sh
+        args:
+          - roscore
+        ports:
+          - containerPort: 11311
+            protocol: TCP
+            name: roscore-port
+        resources:
+          limits:
+            cpu: 250m
+            memory: 100Mi
+          requests:
+            cpu: 250m
+            memory: 100Mi
+      - name: ros-publisher
+        image: ros:melodic-ros-core
+        command:
+          - /ros_entrypoint.sh
+        args:
+          - rostopic
+          - pub
+          - "-r"
+          - "1"
+          - /moni
+          - std_msgs/String
+          - "hello from publisher"
+        env:
+          - name: ROS_MASTER_URI
+            value: http://localhost:11311
+        resources:
+          limits:
+            cpu: 250m
+            memory: 100Mi
+          requests:
+            cpu: 250m
+            memory: 100Mi
+      - name: ros-subscriber
+        image: ros:melodic-ros-core
+        command:
+          - /ros_entrypoint.sh
+        args:
+          - rostopic
+          - echo
+          - /moni
+        env:
+          - name: ROS_MASTER_URI
+            value: http://localhost:11311
+        resources:
+          limits:
+            cpu: 250m
+            memory: 100Mi
+          requests:
+            cpu: 250m
+            memory: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: roscore-arm
+  labels:
+    env: dev
+spec:
+  # clusterIP: None
+  type: NodePort
+  selector:
+    app: roscore-arm
+  ports:
+    - port: 11311
+      targetPort: 11311
+      protocol: TCP
+      name: http
+

@@ -9,6 +9,7 @@ deploy:
     - services/hello/k8s/local/daemon-set.yaml
     - services/hello/k8s/local/daemon-set.arm.yaml
     - services/echo-rust/k8s/local/service.yaml
+    - k8s/local/roscore-daemon-set.arm.yaml
 build:
   insecureRegistries: 
     - registry.local:5000
